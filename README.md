@@ -11,3 +11,4 @@
 - But this division might not always result in an integer (whole number) we either use the ceil or the floor function. Using the ceil the baud clock would be slightly slower leading to longer bit durations. Floor would round down and the baud clock is slightly faster leading to shorter bit durations. 
 - I have use ceil so that the baud clock frequency does not exceed the desired baud rate.
 
+### Parity Generator 

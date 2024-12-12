@@ -9,14 +9,15 @@ mkdir -p $WORK_DIR
 
 # importing source files
 ghdl -i --workdir=$WORK_DIR ../src/ClkDivider.vhd
+ghdl -i --workdir=$WORK_DIR ../src/ParityLogic.vhd
 
-ghdl -i --workdir=$WORK_DIR ./tb_ClkDivider.vhd
+ghdl -i --workdir=$WORK_DIR ./tb_ParityLogic.vhd
 
 # building simulation files
 ghdl -m --workdir=$WORK_DIR tb
 
 # running the simulation
-ghdl -r --workdir=$WORK_DIR tb --wave=$WORK_DIR/$WAVE_FILE --stop-time=1ms
+ghdl -r --workdir=$WORK_DIR tb --wave=$WORK_DIR/$WAVE_FILE --stop-time=5ms
 
 # open gtkwave with project with new waveform if project exists, if not then just open the waveform in new project
 if [ -f $WORK_DIR/$GTKPROJ_FILE ]; then
