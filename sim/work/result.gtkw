@@ -1,28 +1,35 @@
 [*]
 [*] GTKWave Analyzer v3.3.118 (w)1999-2023 BSI
-[*] Thu Dec 12 11:32:22 2024
+[*] Thu Dec 12 12:45:33 2024
 [*]
 [dumpfile] "C:\Users\Posimsetty\Desktop\UART\sim\work\result.ghw"
-[dumpfile_mtime] "Thu Dec 12 11:29:59 2024"
-[dumpfile_size] 1698732
+[dumpfile_mtime] "Thu Dec 12 12:42:27 2024"
+[dumpfile_size] 1698382
 [savefile] "C:\Users\Posimsetty\Desktop\UART\sim\work\result.gtkw"
-[timestart] 54946600000
+[timestart] 0
 [size] 2560 1369
 [pos] -1 -1
-*-27.000000 56065000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-36.582924 241800000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] top.
 [treeopen] top.tb.
-[treeopen] top.tb.dut.
 [sst_width] 278
 [signals_width] 286
 [sst_expanded] 1
 [sst_vpaned_height] 425
 @28
-top.tb.dut.i_clk_100mhz
-top.tb.dut.i_nrst_async
+top.tb.dut_clk_divider.i_clk_100mhz
+top.tb.dut_clk_divider.i_nrst_async
 @420
-top.tb.dut.count
+top.tb.dut_clk_divider.count
 @28
-top.tb.dut.clk_out
+top.tb.dut_clk_divider.clk_out
+top.tb.dut_parity.parity_enable
+@22
+#{top.tb.data_in[7:0]} top.tb.data_in[7] top.tb.data_in[6] top.tb.data_in[5] top.tb.data_in[4] top.tb.data_in[3] top.tb.data_in[2] top.tb.data_in[1] top.tb.data_in[0]
+@28
+top.tb.dut_parity.parity_mode
+top.tb.dut_parity.parity_out
+@29
+top.tb.dut_parity.parity_error
 [pattern_trace] 1
 [pattern_trace] 0
