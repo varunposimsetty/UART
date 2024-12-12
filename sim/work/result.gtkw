@@ -1,0 +1,28 @@
+[*]
+[*] GTKWave Analyzer v3.3.118 (w)1999-2023 BSI
+[*] Thu Dec 12 11:32:22 2024
+[*]
+[dumpfile] "C:\Users\Posimsetty\Desktop\UART\sim\work\result.ghw"
+[dumpfile_mtime] "Thu Dec 12 11:29:59 2024"
+[dumpfile_size] 1698732
+[savefile] "C:\Users\Posimsetty\Desktop\UART\sim\work\result.gtkw"
+[timestart] 54946600000
+[size] 2560 1369
+[pos] -1 -1
+*-27.000000 56065000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] top.
+[treeopen] top.tb.
+[treeopen] top.tb.dut.
+[sst_width] 278
+[signals_width] 286
+[sst_expanded] 1
+[sst_vpaned_height] 425
+@28
+top.tb.dut.i_clk_100mhz
+top.tb.dut.i_nrst_async
+@420
+top.tb.dut.count
+@28
+top.tb.dut.clk_out
+[pattern_trace] 1
+[pattern_trace] 0
