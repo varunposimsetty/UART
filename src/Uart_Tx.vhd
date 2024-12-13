@@ -19,6 +19,7 @@ end entity Uart_Tx;
 architecture RTL of Uart_Tx is 
     constant start_bit : std_ulogic := '0';
     constant stop_bit : std_ulogic := '1';
+    constant data_length : integer := 8;
     signal baud_clk : std_ulogic := '0';
     signal parity_bit : std_ulogic := '0';
     signal start_sync : std_ulogic := '0';
@@ -26,6 +27,9 @@ architecture RTL of Uart_Tx is
     signal count : integer := 0;
     signal tx_data : std_ulogic_vector(10 downto 0) := (others => '0');
     signal tx_done : std_ulogic := '0';
+
+    type state is (IDLE,START_TX,DATA,PARITY,STOP_TX);
+    signal tx_state : state := IDLE;
 
 begin 
 
@@ -50,29 +54,39 @@ begin
             tx_reg <= '1';
             count <= 0;
             tx_done <= '0';
-            tx_data <= (others =>'0');
-        elsif (rising_edge(baud_clk)) then
+            tx_data <= (others => '0');
+        elsif (rising_edge(baud_clk)) then 
             start_sync <= start;
-            if (count > 0 and count <= 10) then -- just incase start goes low during the tx process
-                start_sync <= '1';
-            end if;
-            if (start = '0') then -- idle state 
-                tx_reg <= '1';
-                count <= 0;
-                tx_done <= '0';
-                tx_data <= (others => '0');
-            elsif (start_sync = '1') then 
-                tx_data <= start_bit & data_in & parity_bit & stop_bit;
-                if (count < 10) then 
-                    tx_done <= '0';
-                    tx_reg <= tx_data(count);
-                    count <= count + 1;
-                elsif (count = 10) then
-                    tx_reg <= tx_data(count);
+            case tx_state is
+                when IDLE => 
+                    tx_reg <= '1';
                     count <= 0;
-                    tx_done <= '1';
-                end if;
-            end if;
+                    tx_done <= '0';
+                    if (start_sync <= '1') then
+                        tx_state <= START_TX;
+                    else 
+                        tx_state <= IDLE;
+                    end if;
+                when START_TX =>
+                    tx_reg <= start_bit;
+                    count <= 0;
+                    tx_state <= DATA;
+                when DATA =>
+                    if (count = data_length-1) then
+                        tx_reg <= data_in(count);
+                        tx_state <= PARITY;
+                    else 
+                        tx_reg <= data_in(count);
+                        count <= count + 1; 
+                    end if;
+                when PARITY =>
+                        tx_reg <= parity_bit;
+                        tx_state <= STOP_TX;
+                when STOP_TX =>
+                        tx_reg <= stop_bit;
+                        tx_done <= '1';
+                        tx_state <= IDLE;
+            end case;
         end if;
     end process proc_tx;
     tx <= tx_reg;
