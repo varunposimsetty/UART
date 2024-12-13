@@ -1,5 +1,5 @@
 # UART
-### WORK UNDER PROGRESS
+
 ## Introduction 
 
 
