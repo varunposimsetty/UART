@@ -24,8 +24,6 @@ begin
             -- odd parity
             parity_out <= not(data_in(0) xor data_in(1) xor data_in(2) xor data_in(3) xor data_in(4) xor data_in(5) xor data_in(6) xor data_in(7));
         end if;
-    else 
-            parity_out <= '1'; -- if parity is not enabled we could use this parity_bit = '1' as another stop bit i.e. two stop bits "11"
     end if;
     end process;
 end architecture RTL;
