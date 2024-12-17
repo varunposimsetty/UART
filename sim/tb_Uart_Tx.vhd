@@ -59,7 +59,7 @@ architecture bhv of tb is
                     wait for 1250 ns;
                     rst <= '1';
                     wait for 250000 ns;
-                    rst <= '0';
+                    rst <= '1';
                     wait for 2500 ns;
                     rst <= '1';
                     wait for 100 ns;

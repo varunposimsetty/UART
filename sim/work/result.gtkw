@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.118 (w)1999-2023 BSI
-[*] Mon Dec 16 08:56:41 2024
+[*] Tue Dec 17 09:27:12 2024
 [*]
 [dumpfile] "C:\Users\Posimsetty\Desktop\UART\sim\work\result.ghw"
-[dumpfile_mtime] "Mon Dec 16 08:56:11 2024"
-[dumpfile_size] 49771509
+[dumpfile_mtime] "Tue Dec 17 09:26:59 2024"
+[dumpfile_size] 49779985
 [savefile] "C:\Users\Posimsetty\Desktop\UART\sim\work\result.gtkw"
 [timestart] 150000000000
 [size] 2560 1369
 [pos] -1 -1
-*-36.582924 319300000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-36.582924 326745000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] top.
 [treeopen] top.tb.
 [treeopen] top.tb.dut_tx.
@@ -46,11 +46,11 @@ top.tb.dut_tx.parity_enable
 top.tb.dut_tx.parity_mode
 @22
 #{top.tb.data_in[7:0]} top.tb.data_in[7] top.tb.data_in[6] top.tb.data_in[5] top.tb.data_in[4] top.tb.data_in[3] top.tb.data_in[2] top.tb.data_in[1] top.tb.data_in[0]
-@420
-top.tb.dut_tx.tx_state
 @28
 #{top.tb.dut_tx.data_buffer[7:0]} top.tb.dut_tx.data_buffer[7] top.tb.dut_tx.data_buffer[6] top.tb.dut_tx.data_buffer[5] top.tb.dut_tx.data_buffer[4] top.tb.dut_tx.data_buffer[3] top.tb.dut_tx.data_buffer[2] top.tb.dut_tx.data_buffer[1] top.tb.dut_tx.data_buffer[0]
-@29
+@420
+top.tb.dut_tx.count
+@22
 #{top.tb.dut_tx.tx_reg_buffer[10:0]} top.tb.dut_tx.tx_reg_buffer[10] top.tb.dut_tx.tx_reg_buffer[9] top.tb.dut_tx.tx_reg_buffer[8] top.tb.dut_tx.tx_reg_buffer[7] top.tb.dut_tx.tx_reg_buffer[6] top.tb.dut_tx.tx_reg_buffer[5] top.tb.dut_tx.tx_reg_buffer[4] top.tb.dut_tx.tx_reg_buffer[3] top.tb.dut_tx.tx_reg_buffer[2] top.tb.dut_tx.tx_reg_buffer[1] top.tb.dut_tx.tx_reg_buffer[0]
 @28
 top.tb.tx
