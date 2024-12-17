@@ -27,11 +27,10 @@ architecture RTL of Uart_Tx is
     signal tx_reg : std_ulogic := '1'; -- during idle state tx is high
     signal tx_reg_buffer : std_ulogic_vector(10 downto 0) := (others => '0');
     signal data_buffer : std_ulogic_vector(7 downto 0) := (others => '0');
-    shared variable count : integer := 0;
-    signal tx_complete : std_ulogic := '0';
+    signal count : integer := 0;
+    signal tx_complete : std_ulogic := '1'; -- the Tx is free initially and is ready to transmit.
     
-    type state is (IDLE,INITIAL,DATA,PARITY,LAST);
-    signal tx_state : state := IDLE;
+    
 
 begin 
     DUT_CLK_BAUD : entity work.ClkDivider(RTL)
@@ -48,63 +47,62 @@ begin
             parity_mode => parity_mode,
             parity_out => parity_bit
         );
-    
-    proc_tx : process(baud_clk, i_nrst_async)
-        variable data_bit_count : integer := 0;
-    begin 
-        if (i_nrst_async = '0') then 
-            tx_reg <= '1';
-            data_buffer <= (others => '0');
-            count := 0;
-            tx_state <= IDLE;
-            tx_complete <= '0';
-        elsif rising_edge(baud_clk) then 
-            
-            case tx_state is 
-                when IDLE =>
-                    tx_reg <= '1';
+
+    proc_tx : process (baud_clk,i_nrst_async) is 
+        begin 
+            if (i_nrst_async = '0') then 
+                tx_reg <= '1';
+                data_buffer <= (others => '0');
+                count <= 0;
+                tx_complete <= '1';
+            elsif (rising_edge(baud_clk)) then 
+                
+                if (start = '1' and tx_complete = '1') then 
+                    count <= 0;
                     data_buffer <= (others => '0');
-                    count := 0;
-                    tx_complete <= '0';
-                    if (start = '1') then 
+                    tx_reg_buffer <= (others => '0');
+                else 
+                    count <= count + 1;
+                end if;
+
+                case count is 
+
+                    when 0 =>
+                        tx_complete <= '0';
                         data_buffer <= data_in;
-                        tx_reg_buffer <= start_bit & data_in & stop_bit & stop_bit;
-                        tx_state <= INITIAL;
-                        count := count + 1;
-                    else 
-                        tx_state <= IDLE;
-                    end if;
-                when INITIAL =>
-                    tx_reg <= start_bit;
-                    count := count + 1;
-                    tx_state <= DATA;
-                    data_bit_count := 0;
-                    when DATA => 
-                    if data_bit_count < 8 then
-                        tx_reg <= data_buffer(data_bit_count);
-                        data_bit_count := data_bit_count + 1;
-                        count := count + 1;
-                    else
-                        data_bit_count := 0;
-                        if (parity_enable = '1') then
-                            tx_state <= PARITY;
-                            count := count + 1;
+                        if (parity_enable = '1') then 
+                            tx_reg_buffer <= start_bit & data_in & parity_bit & stop_bit;
                         else 
-                            tx_state <= LAST;
-                            count := count + 2;
+                            tx_reg_buffer <= start_bit & data_in & stop_bit & stop_bit;
                         end if;
-                    end if;
-                when PARITY =>
-                            tx_reg <= parity_bit;
-                            count := count + 1;
-                            tx_state <= LAST;
-                when LAST =>
-                            tx_reg <= stop_bit;
-                            tx_complete <= '1';
-                            tx_state <= IDLE;
-            end case;
+                    
+                    when 1 =>
+                        tx_reg <= tx_reg_buffer(10);
+                        tx_reg_buffer <= tx_reg_buffer(9 downto 0) & '0';
+                    
+                    when 2 to 9 =>
+                        tx_reg <= tx_reg_buffer(10);
+                        tx_reg_buffer <= tx_reg_buffer(9 downto 0) & '0';
+                    
+                    when 10 =>
+                        if (parity_enable = '1') then 
+                            tx_reg <= tx_reg_buffer(10);
+                            tx_reg_buffer <= tx_reg_buffer(9 downto 0) & '0';
+                        else 
+                            tx_reg <= tx_reg_buffer(10);
+                            tx_reg_buffer <= tx_reg_buffer(9 downto 0) & '0';
+                        end if;
+                    when 11 =>
+                        tx_reg <= tx_reg_buffer(10);
+                        tx_reg_buffer <= tx_reg_buffer(9 downto 0) & '0';
+                        tx_complete <= '1';
+                        count <= 0;
+                    when others =>
+                        null;
+                
+                end case;
             end if;
-    end process proc_tx;
-    tx <= tx_reg;
-    ready <= tx_complete;
+        end process proc_tx;
+        tx <= tx_reg;
+        ready <= tx_complete;
 end architecture RTL;
