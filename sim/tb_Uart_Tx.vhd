@@ -14,16 +14,20 @@ architecture bhv of tb is
     signal parity_enable : std_ulogic := '0';
     signal parity_mode : std_ulogic := '0';
     signal parity_out : std_ulogic;
+    signal start : std_ulogic := '0';
+    signal tx : std_ulogic;
+    signal ready : std_ulogic := '0';
 
     begin 
-    DUT_CLK_DIVIDER : entity work.ClkDivider(RTL)
+
+    DUT_CLK_BAUD : entity work.ClkDivider(RTL)
         port map(
             i_clk_100MHz => clk,
             i_nrst_async => rst,
             clk_out => clk_out
         );
 
-    DUT_PARITY : entity work.ParityLogic(RTL)
+    DUT_Parity : entity work.ParityLogic(RTL)
         port map(
             data_in => data_in,
             parity_enable => parity_enable,
@@ -31,23 +35,38 @@ architecture bhv of tb is
             parity_out => parity_out
         );
 
+    DUT_TX : entity work.Uart_Tx(RTL)
+        port map(
+            i_clk_100MHz => clk,
+            i_nrst_async => rst,
+            data_in  => data_in,
+            start    => start,
+            parity_enable => parity_enable,
+            parity_mode => parity_mode,
+            tx => tx,
+            ready => ready
+        );
+
         proc_clock_gen : process is
             begin
                 wait for 5 ns;
                 clk <= not clk;
             end process proc_clock_gen;
+        
             
-            proc_tb : process is
+        proc_tb : process is
                 begin
                     wait for 1250 ns;
                     rst <= '1';
                     wait for 250000 ns;
-                    rst <= '0';
+                    rst <= '1';
                     wait for 2500 ns;
                     rst <= '1';
                     wait for 100 ns;
                     parity_enable <= '1';
-                    wait for 100000 ns;
+                    wait for 100 ns;
+                    start <= '1';
+                    wait for 1000 ns;
                     data_in <= "01010101";
                     wait for 200000 ns;
                     data_in <= "11101010";
@@ -57,6 +76,10 @@ architecture bhv of tb is
                     parity_mode <= '1';
                     wait for 1000000 ns;
                     data_in <= "01000111";
+                    wait for 2000 ns;
+                    start <= '0';
+                    wait for 1000 ns;
+                    start <= '1';
                     wait for 2000000 ns;
                     data_in <= "10101110";
                     wait for 2000000 ns;
@@ -68,5 +91,5 @@ architecture bhv of tb is
                     wait for 100 ns;
                     rst <= '1';
                     wait;
-                end process proc_tb;
+        end process proc_tb;
 end architecture bhv;
