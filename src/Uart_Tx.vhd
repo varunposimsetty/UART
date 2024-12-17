@@ -3,6 +3,8 @@ use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 use IEEE.math_real.all;
 
+-- if there is no parity bit the stop bit is transmitted twice
+
 entity Uart_Tx is 
     port (
         i_clk_100MHz  : in std_ulogic;
@@ -27,7 +29,7 @@ architecture RTL of Uart_Tx is
     signal tx_reg : std_ulogic := '1'; -- during idle state tx is high
     signal tx_reg_buffer : std_ulogic_vector(10 downto 0) := (others => '0');
     signal data_buffer : std_ulogic_vector(7 downto 0) := (others => '0');
-    signal count : integer := 0;
+    shared variable count : integer := 0;
     signal tx_complete : std_ulogic := '1'; -- the Tx is free initially and is ready to transmit.
     
     
@@ -53,16 +55,17 @@ begin
             if (i_nrst_async = '0') then 
                 tx_reg <= '1';
                 data_buffer <= (others => '0');
-                count <= 0;
+                count := 0;
                 tx_complete <= '1';
             elsif (rising_edge(baud_clk)) then 
                 
                 if (start = '1' and tx_complete = '1') then 
-                    count <= 0;
+                    tx_reg <= '1';
+                    count := 0;
                     data_buffer <= (others => '0');
                     tx_reg_buffer <= (others => '0');
                 else 
-                    count <= count + 1;
+                    count := count + 1;
                 end if;
 
                 case count is 
@@ -96,7 +99,7 @@ begin
                         tx_reg <= tx_reg_buffer(10);
                         tx_reg_buffer <= tx_reg_buffer(9 downto 0) & '0';
                         tx_complete <= '1';
-                        count <= 0;
+                        count := 0;
                     when others =>
                         null;
                 
