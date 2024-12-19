@@ -13,7 +13,7 @@ architecture bhv of tb is
     signal data_in : std_ulogic_vector(7 downto 0) := (others => '0');
     signal parity_enable : std_ulogic := '0';
     signal parity_mode : std_ulogic := '0';
-    signal parity_out : std_ulogic;
+    signal parity_out : std_ulogic := '0';
 
     begin 
     DUT_CLK_DIVIDER : entity work.ClkDivider(RTL)
