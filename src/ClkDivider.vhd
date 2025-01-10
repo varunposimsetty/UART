@@ -9,7 +9,7 @@ use IEEE.math_real.all;
 
 entity ClkDivider is 
     generic (
-        BAUD_RATE : integer := 38400
+        BAUD_RATE : integer := 115200
     );
     port (
         i_clk_100MHz : in std_ulogic;

@@ -11,8 +11,9 @@ mkdir -p $WORK_DIR
 ghdl -i --workdir=$WORK_DIR ../src/ClkDivider.vhd
 ghdl -i --workdir=$WORK_DIR ../src/ParityLogic.vhd
 ghdl -i --workdir=$WORK_DIR ../src/Uart_Tx.vhd
+ghdl -i --workdir=$WORK_DIR ../src/Uart_Rx.vhd
 
-ghdl -i --workdir=$WORK_DIR ./tb_Uart_Tx.vhd
+ghdl -i --workdir=$WORK_DIR ./tb_Uart.vhd
 
 # building simulation files
 ghdl -m --workdir=$WORK_DIR tb
