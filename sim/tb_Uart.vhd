@@ -83,7 +83,7 @@ architecture bhv of tb is
                     wait for 2500 ns;
                     rst <= '1';
                     wait for 100 ns;
-                    parity_enable <= '1';
+                    parity_enable <= '0';
                     wait for 100 ns;
                     start <= '1';
                     wait for 1000 ns;
@@ -115,7 +115,7 @@ architecture bhv of tb is
 
         proc_rx : process is 
             begin 
-                wait for 10000 ns;
+                wait for 16000 ns;
                 rx <= not rx;
             end process proc_rx;
 end architecture bhv;

@@ -24,7 +24,7 @@ architecture RTL of Uart_Rx is
     signal parity_bit : std_ulogic := '0';
     signal error_parity : std_ulogic := '1';
     -- signals for UART rx 
-    signal rx_reg_buffer : std_ulogic_vector(10 downto 0) := (others => '0');
+    signal rx_reg_buffer : std_ulogic_vector(10 downto 0) := (others => '1');
     signal data_buffer : std_ulogic_vector(7 downto 0) := (others => '0');
     signal rx_word : std_ulogic_vector(7 downto 0) := (others => '0');
     
@@ -51,7 +51,7 @@ begin
     proc_rx : process(baud_clk,i_nrst_async) is 
         begin 
             if (i_nrst_async = '0') then 
-                rx_reg_buffer <= (others => '0');
+                rx_reg_buffer <= (others => '1');
                 data_buffer <= (others => '0');
                 
             elsif (rising_edge(baud_clk)) then 
@@ -84,6 +84,7 @@ begin
                             parity_error <= '1';
                         end if;
                     end if; 
+                    rx_reg_buffer <= (others => '1');
                     data_ready <= '1';
                 else 
                     framing_error <= '1';
