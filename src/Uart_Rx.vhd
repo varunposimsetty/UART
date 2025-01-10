@@ -48,7 +48,7 @@ begin
             parity_out => parity_bit
     );
 
-    proc_rx : process(i_clk_100MHz,i_nrst_async) is 
+    proc_rx : process(baud_clk,i_nrst_async) is 
         begin 
             if (i_nrst_async = '0') then 
                 rx_reg_buffer <= (others => '0');
