@@ -17,6 +17,13 @@ architecture bhv of tb is
     signal start : std_ulogic := '0';
     signal tx : std_ulogic;
     signal ready : std_ulogic := '0';
+    signal rx : std_ulogic := '0';
+    signal data_out : std_ulogic_vector(7 downto 0) := (others => '0');
+    signal data_ready : std_ulogic := '0';
+    signal parity_error : std_ulogic := '0';
+    signal framing_error : std_ulogic := '1';
+
+
 
     begin 
 
@@ -45,6 +52,19 @@ architecture bhv of tb is
             parity_mode => parity_mode,
             tx => tx,
             ready => ready
+        );
+
+    DUT_RX : entity work.Uart_Rx(RTL)
+        port map(
+            i_clk_100MHz => clk,
+            i_nrst_async => rst,
+            rx  => rx,
+            parity_enable => parity_enable,
+            parity_mode => parity_mode,
+            data_out => data_out,
+            data_ready => data_ready,
+            parity_error => parity_error,
+            framing_error => framing_error
         );
 
         proc_clock_gen : process is
@@ -92,4 +112,10 @@ architecture bhv of tb is
                     rst <= '1';
                     wait;
         end process proc_tb;
+
+        proc_rx : process is 
+            begin 
+                wait for 10000 ns;
+                rx <= not rx;
+            end process proc_rx;
 end architecture bhv;
